@@ -1,9 +1,11 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const rules = require('./webpack.rules');
 const plugins = require('./webpack.plugins');
 
 rules.push({
   test: /\.css$/,
-  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+  use: [{ loader: MiniCssExtractPlugin.loader }, { loader: 'css-loader' }],
 });
 
 module.exports = {
