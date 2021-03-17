@@ -4,6 +4,8 @@ const HtmlInlineCssWebpackPlugin = require('html-inline-css-webpack-plugin').def
 const SriPlugin = require('webpack-subresource-integrity');
 const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
 
+const isDev = process.env.npm_lifecycle_event === 'start';
+
 module.exports = [
   new ForkTsCheckerWebpackPlugin(),
   new MiniCssExtractPlugin(),
@@ -12,8 +14,8 @@ module.exports = [
     hashFuncNames: ['sha256'],
   }),
   new CspHtmlWebpackPlugin({
-    'script-src': "",
-    'style-src': "",
+    'script-src': isDev ? "'self'" : "",
+    'style-src': isDev ? "'unsafe-inline'" : "",
   }, {
     nonceEnabled: {
       'script-src': false,
