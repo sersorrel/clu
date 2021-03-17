@@ -11,6 +11,7 @@ rules.push({
 });
 
 module.exports = {
+  mode: isDev ? 'development' : 'production',
   module: {
     rules,
   },
