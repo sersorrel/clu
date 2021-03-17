@@ -1,4 +1,5 @@
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlInlineCssWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 const SriPlugin = require('webpack-subresource-integrity');
@@ -8,6 +9,11 @@ const isDev = process.env.npm_lifecycle_event === 'start';
 
 module.exports = [
   new ForkTsCheckerWebpackPlugin(),
+  ...(isDev ? [new ReactRefreshWebpackPlugin({
+    overlay: {
+      sockIntegration: 'whm',
+    },
+  })] : []),
   new MiniCssExtractPlugin(),
   new HtmlInlineCssWebpackPlugin(),
   new SriPlugin({

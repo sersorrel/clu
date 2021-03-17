@@ -1,3 +1,5 @@
+const isDev = process.env.npm_lifecycle_event === 'start';
+
 module.exports = [
   // Add support for native node modules
   {
@@ -24,4 +26,22 @@ module.exports = [
       }
     }
   },
+  {
+    test: /\.[jt]sx$/,
+    exclude: /(node_modules|\.webpack)/,
+    use: [
+      {
+        loader: 'babel-loader',
+        options: {
+          plugins: isDev ? ['react-refresh/babel'] : [],
+        },
+      },
+      {
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+        }
+      }
+    ],
+  }
 ];
