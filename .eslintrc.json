@@ -24,6 +24,7 @@
     }
   },
   "rules": {
+    "quotes": ["warn", "double"],
     "react/react-in-jsx-scope": "off"
   },
   "overrides": [
