@@ -22,7 +22,8 @@ module.exports = [
     use: {
       loader: 'ts-loader',
       options: {
-        transpileOnly: true
+        transpileOnly: true,
+        ...(isDev ? {} : {configFile: 'tsconfig.prod.json'}),
       }
     }
   },
@@ -40,6 +41,7 @@ module.exports = [
         loader: 'ts-loader',
         options: {
           transpileOnly: true,
+          ...(isDev ? {} : {configFile: 'tsconfig.prod.json'}),
         }
       }
     ],
