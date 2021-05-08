@@ -6,8 +6,8 @@ const plugins = require("./webpack.plugins");
 const isDev = process.env.npm_lifecycle_event === "start";
 
 rules.push({
-  test: /\.css$/,
-  use: [{ loader: isDev ? "style-loader" : MiniCssExtractPlugin.loader }, { loader: "css-loader" }],
+  test: /\.css$/u,
+  use: [{loader: isDev ? "style-loader" : MiniCssExtractPlugin.loader}, {loader: "css-loader"}],
 });
 
 module.exports = {
@@ -15,8 +15,8 @@ module.exports = {
   module: {
     rules,
   },
-  plugins: plugins,
+  plugins,
   resolve: {
-    extensions: [".js", ".ts", ".jsx", ".tsx", ".css"]
+    extensions: [".js", ".ts", ".jsx", ".tsx", ".css"],
   },
 };

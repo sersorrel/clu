@@ -23,9 +23,32 @@
       "version": "detect"
     }
   },
+  "reportUnusedDisableDirectives": true,
   "rules": {
+    "array-element-newline": ["warn", "consistent"],
+    "arrow-body-style": "warn",
+    "arrow-parens": ["warn", "as-needed"],
+    "brace-style": ["warn", "1tbs"],
+    "capitalized-comments": ["warn", "always", {"ignoreConsecutiveComments": true}],
+    "comma-dangle": ["warn", "always-multiline"],
+    "function-call-argument-newline": ["warn", "consistent"],
+    "function-paren-newline": ["warn", "multiline-arguments"],
+    "indent": ["error", 2],
+    "max-len": ["warn", {"ignoreStrings": true}],
+    "multiline-comment-style": ["warn", "separate-lines"],
+    "no-extra-parens": "warn",
+    "no-implied-eval": "error",
+    "no-multi-spaces": ["error", {"exceptions": {}}],
+    "no-trailing-spaces": "error",
+    "object-shorthand": "warn",
+    "padded-blocks": ["warn", "never"],
     "quotes": ["warn", "double"],
-    "react/react-in-jsx-scope": "off"
+    "quote-props": ["warn", "as-needed", {"numbers": true}],
+    "react/react-in-jsx-scope": "off",
+    "require-unicode-regexp": "error",
+    "sort-keys": ["warn", "asc", {"natural": true}],
+    "sort-imports": ["warn", {"allowSeparatedGroups": true}],
+    "unicode-bom": "error"
   },
   "overrides": [
     {

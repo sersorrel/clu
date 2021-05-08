@@ -9,23 +9,26 @@ const isDev = process.env.npm_lifecycle_event === "start";
 
 module.exports = [
   new ForkTsCheckerWebpackPlugin(),
-  ...(isDev ? [new ReactRefreshWebpackPlugin({
+  ...isDev ? [new ReactRefreshWebpackPlugin({
     overlay: {
       sockIntegration: "whm",
     },
-  })] : []),
+  })] : [],
   new MiniCssExtractPlugin(),
   new HtmlInlineCssWebpackPlugin(),
   new SriPlugin({
     hashFuncNames: ["sha256"],
   }),
-  new CspHtmlWebpackPlugin({
-    "script-src": isDev ? "'self'" : "",
-    "style-src": isDev ? "'unsafe-inline'" : "",
-  }, {
-    nonceEnabled: {
-      "script-src": false,
-      "style-src": false,
+  new CspHtmlWebpackPlugin(
+    {
+      "script-src": isDev ? "'self'" : "",
+      "style-src": isDev ? "'unsafe-inline'" : "",
     },
-  }),
+    {
+      nonceEnabled: {
+        "script-src": false,
+        "style-src": false,
+      },
+    }
+  ),
 ];

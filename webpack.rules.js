@@ -3,12 +3,12 @@ const isDev = process.env.npm_lifecycle_event === "start";
 module.exports = [
   // Add support for native node modules
   {
-    test: /\.node$/,
+    test: /\.node$/u,
     use: "node-loader",
   },
   {
-    test: /\.(m?js|node)$/,
-    parser: { amd: false },
+    parser: {amd: false},
+    test: /\.(m?js|node)$/u,
     use: {
       loader: "@marshallofsound/webpack-asset-relocator-loader",
       options: {
@@ -17,19 +17,19 @@ module.exports = [
     },
   },
   {
-    test: /\.tsx?$/,
-    exclude: /(node_modules|\.webpack)/,
+    exclude: /(node_modules|\.webpack)/u,
+    test: /\.tsx?$/u,
     use: {
       loader: "ts-loader",
       options: {
         transpileOnly: true,
-        ...(isDev ? {} : {configFile: "tsconfig.prod.json"}),
-      }
-    }
+        ...isDev ? {} : {configFile: "tsconfig.prod.json"},
+      },
+    },
   },
   {
-    test: /\.[jt]sx$/,
-    exclude: /(node_modules|\.webpack)/,
+    exclude: /(node_modules|\.webpack)/u,
+    test: /\.[jt]sx$/u,
     use: [
       {
         loader: "babel-loader",
@@ -41,9 +41,9 @@ module.exports = [
         loader: "ts-loader",
         options: {
           transpileOnly: true,
-          ...(isDev ? {} : {configFile: "tsconfig.prod.json"}),
-        }
-      }
+          ...isDev ? {} : {configFile: "tsconfig.prod.json"},
+        },
+      },
     ],
-  }
+  },
 ];
