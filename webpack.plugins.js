@@ -21,6 +21,7 @@ module.exports = [
       "style-src": isDev ? "'unsafe-inline'" : "",
     },
     {
+      enabled: !isDev,
       nonceEnabled: {
         "script-src": false,
         "style-src": false,
