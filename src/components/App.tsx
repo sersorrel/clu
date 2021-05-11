@@ -1,15 +1,19 @@
 import ReactFlow from "react-flow-renderer";
 
+import { Sidebar } from "./Sidebar";
+
+import "./App.css";
+
 export function App(): JSX.Element {
-  return <>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
-    <ReactFlow style={{height: "300px"}} elements={[
+  return <div className="app">
+    <h1 className="app__header">CLU</h1>
+    <Sidebar className="app__sidebar"/>
+    <ReactFlow className="app__graph" elements={[
       {
         data: {label: "a node"},
         id: "1",
         position: {x: 0, y: 0},
       },
-    ]} />
-  </>;
+    ]}/>
+  </div>;
 }
