@@ -27,6 +27,8 @@
   },
   "reportUnusedDisableDirectives": true,
   "rules": {
+    "@typescript-eslint/no-extra-parens": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "array-element-newline": ["warn", "consistent"],
     "arrow-body-style": "warn",
     "arrow-parens": ["warn", "as-needed"],
@@ -76,7 +78,6 @@
       "ignoreStrings": true
     }],
     "multiline-comment-style": ["warn", "separate-lines"],
-    "no-extra-parens": "warn",
     "no-implied-eval": "error",
     "no-multi-spaces": ["error", {"exceptions": {}}],
     "no-multiple-empty-lines": ["warn", {
