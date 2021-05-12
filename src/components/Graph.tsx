@@ -1,12 +1,14 @@
 import ReactFlow, { Edge, Node } from "react-flow-renderer";
 
-import { useSelector } from "../hooks";
+import { useDispatch, useSelector } from "../hooks";
+import { removeCommands, removePipes } from "../reducers/graph";
 
 type Props = {
   className?: string,
 }
 
 export function Graph({className = ""}: Props): JSX.Element {
+  const dispatch = useDispatch();
   const commandElements: Node[] = useSelector(state => state.graph.commands).map(command => ({
     data: {label: command.command},
     id: command.id,
@@ -22,5 +24,9 @@ export function Graph({className = ""}: Props): JSX.Element {
   return <ReactFlow
     className={className}
     elements={[...commandElements, ...pipeElements]}
+    onElementsRemove={elements => {
+      dispatch(removePipes(elements.map(element => element.id)));
+      dispatch(removeCommands(elements.map(element => element.id)));
+    }}
   />;
 }

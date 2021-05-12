@@ -19,13 +19,16 @@ type Pipe = {
   destinationHandle: string,
 };
 
-export const addCommand = createAction("graph/addCommand", (command: Omit<Command, "id"> & Partial<Command>) => {
-  command.id ??= uuid();
-  // TypeScript doesn't seem able to narrow the type of `command` all the way to
+export const addCommands = createAction("graph/addCommands", (commands: Array<Omit<Command, "id"> & Partial<Command>>) => {
+  commands.map(command => {
+    command.id ??= uuid();
+  });
+  // TypeScript doesn't seem able to narrow the type of a command all the way to
   // `Command` even after we give it an `id`.
-  return {payload: command as Command};
+  return {payload: commands as Command[]};
 });
-export const removeCommand = createAction<Command["id"]>("graph/removeCommand");
+export const removeCommands = createAction<Array<Command["id"]>>("graph/removeCommands");
+export const removePipes = createAction<Array<Pipe["id"]>>("graph/removePipes");
 
 const defaultPipes: Pipe[] = [];
 const defaultCommands: Command[] = [{
@@ -41,12 +44,24 @@ export const graphReducer = createReducer({
   pipes: defaultPipes,
 }, builder => {
   builder
-    .addCase(addCommand, (state, action) => {
-      state.commands.push(action.payload);
-    })
-    .addCase(removeCommand, (state, action) => ({
+    .addCase(addCommands, (state, action) => ({
       ...state,
-      nodes: state.commands.filter(node => node.id !== action.payload),
+      commands: state.commands.concat(action.payload),
     }))
+    .addCase(removeCommands, (state, action) => {
+      const toRemove = new Set(action.payload);
+      return {
+        ...state,
+        commands: state.commands.filter(command => !toRemove.has(command.id)),
+        pipes: state.pipes.filter(pipe => !(toRemove.has(pipe.source) || toRemove.has(pipe.destination))),
+      };
+    })
+    .addCase(removePipes, (state, action) => {
+      const toRemove = new Set(action.payload);
+      return {
+        ...state,
+        pipes: state.pipes.filter(pipe => !toRemove.has(pipe.id)),
+      };
+    })
   ;
 });
