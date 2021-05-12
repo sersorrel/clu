@@ -1,7 +1,9 @@
+/* eslint-disable import/unambiguous */
+
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const rules = require("./webpack.rules");
 const plugins = require("./webpack.plugins");
+const rules = require("./webpack.rules");
 
 const isDev = process.env.npm_lifecycle_event === "start";
 

@@ -1,8 +1,9 @@
 import ReactFlow from "react-flow-renderer";
 import { Provider } from "react-redux";
 
-import { Sidebar } from "./Sidebar";
 import { store } from "../store";
+
+import { Sidebar } from "./Sidebar";
 
 import "./App.css";
 

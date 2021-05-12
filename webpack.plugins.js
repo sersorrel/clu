@@ -1,8 +1,10 @@
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+/* eslint-disable import/unambiguous */
+
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlInlineCssWebpackPlugin = require("html-inline-css-webpack-plugin").default;
 const CspHtmlWebpackPlugin = require("csp-html-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const HtmlInlineCssWebpackPlugin = require("html-inline-css-webpack-plugin").default;
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const isDev = process.env.npm_lifecycle_event === "start";
 
@@ -26,6 +28,6 @@ module.exports = [
         "script-src": false,
         "style-src": false,
       },
-    }
+    },
   ),
 ];

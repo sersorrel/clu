@@ -1,3 +1,5 @@
+/* eslint-disable import/unambiguous */
+
 const isDev = process.env.npm_lifecycle_event === "start";
 
 module.exports = {

@@ -1,6 +1,7 @@
 import { BrowserWindow, app } from "electron";
-declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+
+declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
 const isDev = !app.isPackaged;
 
