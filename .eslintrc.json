@@ -33,6 +33,7 @@
     "brace-style": ["warn", "1tbs"],
     "capitalized-comments": ["warn", "always", {"ignoreConsecutiveComments": true}],
     "comma-dangle": ["warn", "always-multiline"],
+    "comma-spacing": "warn",
     "function-call-argument-newline": ["warn", "consistent"],
     "function-paren-newline": ["warn", "multiline-arguments"],
     "import/extensions": ["warn", "ignorePackages", {
@@ -69,7 +70,11 @@
     }],
     "import/unambiguous": "warn",
     "indent": ["error", 2],
-    "max-len": ["warn", {"ignoreStrings": true}],
+    "max-len": ["warn", {
+      "code": 120,
+      "comments": 80,
+      "ignoreStrings": true
+    }],
     "multiline-comment-style": ["warn", "separate-lines"],
     "no-extra-parens": "warn",
     "no-implied-eval": "error",
