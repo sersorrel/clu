@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import ReactFlow, { Edge, Node, useZoomPanHelper } from "react-flow-renderer";
+import ReactFlow, { Edge, isEdge, isNode, Node, useZoomPanHelper } from "react-flow-renderer";
 
 import { useDispatch, useSelector } from "../hooks";
 import { addCommands, removeCommands, removePipes } from "../reducers/graph";
@@ -59,8 +59,14 @@ export function Graph({className = ""}: Props): JSX.Element {
         }]));
       }}
       onElementsRemove={elements => {
-        dispatch(removePipes(elements.map(element => element.id)));
-        dispatch(removeCommands(elements.map(element => element.id)));
+        const pipes = elements.filter(element => isEdge(element));
+        const commands = elements.filter(element => isNode(element));
+        if (pipes.length > 0) {
+          dispatch(removePipes(pipes.map(pipe => pipe.id)));
+        }
+        if (commands.length > 0) {
+          dispatch(removeCommands(commands.map(command => command.id)));
+        }
       }}
     />
   </div>;
