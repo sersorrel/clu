@@ -5,7 +5,7 @@ type Command = {
   id: string,
   inputs: number,
   outputs: number,
-  command: string,
+  command: string[],
   position: {
     x: number,
     y: number,
@@ -21,7 +21,7 @@ type Pipe = {
 
 const defaultPipes: Pipe[] = [];
 const defaultCommands: Command[] = [{
-  command: "echo 'hello, world!'",
+  command: "echo 'hello, world!'".split(" "),
   id: uuid(),
   inputs: 0,
   outputs: 1,

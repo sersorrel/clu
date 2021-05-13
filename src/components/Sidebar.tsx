@@ -1,13 +1,14 @@
 import { DragEvent } from "react";
 
 import "./Sidebar.css";
+import { CommandData } from "./commands/types";
 
 type Props = {
   className?: string,
 };
 
 export function Sidebar({className = ""}: Props): JSX.Element {
-  const onDragStart = (command: string, event: DragEvent) => {
+  const onDragStart = (command: CommandData["command"], event: DragEvent) => {
     const rect = (event.target as Element).getBoundingClientRect();
     const offset = {
       x: event.clientX - rect.left,
@@ -23,7 +24,7 @@ export function Sidebar({className = ""}: Props): JSX.Element {
     <div
       className="react-flow__node react-flow__node-default sidebar__node"
       draggable
-      onDragStart={event => onDragStart("echo 'todo'", event)} // TODO
+      onDragStart={event => onDragStart("echo 'todo'".split(" "), event)} // TODO
     >
       a node
     </div>
