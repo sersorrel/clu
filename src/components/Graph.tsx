@@ -4,6 +4,8 @@ import ReactFlow, { Edge, Node, useZoomPanHelper } from "react-flow-renderer";
 import { useDispatch, useSelector } from "../hooks";
 import { addCommands, removeCommands, removePipes } from "../reducers/graph";
 
+import { CommandNode } from "./CommandNode";
+
 type Props = {
   className?: string,
 }
@@ -11,9 +13,12 @@ type Props = {
 export function Graph({className = ""}: Props): JSX.Element {
   const dispatch = useDispatch();
   const commandElements: Node[] = useSelector(state => state.graph.commands).map(command => ({
-    data: {label: command.command},
+    data: {
+      command: command.command,
+    },
     id: command.id,
     position: command.position,
+    type: "command",
   }));
   const pipeElements: Edge[] = useSelector(state => state.graph.pipes).map(pipe => ({
     id: pipe.id,
@@ -30,6 +35,9 @@ export function Graph({className = ""}: Props): JSX.Element {
     <ReactFlow
       className={className}
       elements={[...commandElements, ...pipeElements]}
+      nodeTypes={{
+        command: CommandNode,
+      }}
       onDragOver={event => {
         event.preventDefault();
         event.dataTransfer.dropEffect = "move";
