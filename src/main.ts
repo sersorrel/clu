@@ -1,5 +1,5 @@
 import { BrowserWindow, app } from "electron";
-import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
@@ -31,7 +31,7 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   if (isDev) {
-    installExtension(REACT_DEVELOPER_TOOLS).then(extensions => {
+    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]).then(extensions => {
       console.log(`Installed extensions: ${extensions}`);
     }).catch(err => {
       console.error(`Failed to install extensions: ${err}`);
