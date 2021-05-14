@@ -21,12 +21,15 @@ export function Sidebar({className = ""}: Props): JSX.Element {
     event.dataTransfer.effectAllowed = "move";
   };
   return <div className={`sidebar ${className}`}>
-    <div
-      className="react-flow__node react-flow__node-default sidebar__node"
-      draggable
-      onDragStart={event => onDragStart("echo 'todo'".split(" "), event)} // TODO
-    >
-      a node
-    </div>
+    {["df", "cut", "sort", "uniq", "wc"].map(command =>
+      <div
+        className="react-flow__node react-flow__node-default sidebar__node"
+        draggable
+        key={command}
+        onDragStart={event => onDragStart([command], event)}
+      >
+        {command}
+      </div>
+    )}
   </div>;
 }
