@@ -12,3 +12,7 @@
   background: #fff;
   border-color: #1a192b;
 }
+
+.node__commandline {
+  font-family: monospace;
+}

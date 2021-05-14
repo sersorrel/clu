@@ -21,7 +21,6 @@
 .app__sidebar {
   grid-area: sidebar;
   justify-self: center;
-  padding: 8px;
   background-color: #ddd;
 }
 
