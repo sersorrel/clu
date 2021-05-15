@@ -11,7 +11,7 @@ interface CommandData extends BaseCommandData {
   onlyDelimited: boolean,
   outputDelimiter: string | null,
   selectBy: "bytes" | "characters" | "fields",
-  selectList: {start: number | null, end: number | null}[],
+  selectList: string,
   zeroTerminated: boolean,
 }
 
@@ -26,41 +26,18 @@ export function toTotal(data: Partial<CommandData> & BaseCommandData): CommandDa
     onlyDelimited: data.onlyDelimited ?? false,
     outputDelimiter: data.outputDelimiter ?? null,
     selectBy: data.selectBy ?? "fields",
-    selectList: data.selectList ?? [],
+    selectList: data.selectList ?? "",
     zeroTerminated: data.zeroTerminated ?? false,
   };
 }
 
-function selectListToString(selectList: CommandData["selectList"]): string {
-  return selectList.map(({start, end}) => {
-    console.assert(start != null || end != null);
-    if (start === end)
-      return `${start}`;
-    if (start == null)
-      return `-${end}`;
-    if (end == null)
-      return `${start}-`;
-    console.assert(start < end);
-    return `${start}-${end}`;
-  }).join(",");
-}
-
-function selectListFromString(str: string): CommandData["selectList"] {
-  return str.split(",").map(range => {
-    const [start, end = ""] = range.split("-");
-    // eslint-disable-next-line sort-keys
-    return {start: Number(start) || null, end: Number(end) || null};
-  });
-}
-
 export function toCommand(_data: BaseCommandData): string[] {
   const data: CommandData = toTotal(_data);
-  const selectList = selectListToString(data.selectList);
   return [
     "cut",
-    ...data.selectBy === "bytes" ? ["-b", selectList] : [],
-    ...data.selectBy === "characters" ? ["-c", selectList] : [],
-    ...data.selectBy === "fields" ? ["-f", selectList] : [],
+    ...data.selectList && data.selectBy === "bytes" ? ["-b", data.selectList] : [],
+    ...data.selectList && data.selectBy === "characters" ? ["-c", data.selectList] : [],
+    ...data.selectList && data.selectBy === "fields" ? ["-f", data.selectList] : [],
     ...data.complement ? ["--complement"] : [],
     ...data.delimiter != null ? ["-d", data.delimiter] : [],
     ...data.onlyDelimited ? ["-s"] : [],
@@ -88,9 +65,9 @@ export const Command = function CutCommand({id}: BaseProps): JSX.Element {
       className="nodrag"
       placeholder="1-3"
       size={1}
-      value={selectListToString(data.selectList)}
+      value={data.selectList}
       onChange={event => {
-        dispatch(editCommandData({data: {...data, selectList: selectListFromString(event.target.value)}, id}));
+        dispatch(editCommandData({data: {...data, selectList: event.target.value || null}, id}));
       }}
     /></div>
     <div className="node__control"><label className="nodrag">invert selection <input
