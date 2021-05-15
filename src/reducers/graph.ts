@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
 
-import type { CommandData } from "../components/commands/types";
+import type { BaseCommandData } from "../components/commands/types";
 
 type Command = {
   id: string,
   inputs: number,
   outputs: number,
-  data: CommandData,
+  data: BaseCommandData,
   position: {
     x: number,
     y: number,
@@ -21,16 +21,8 @@ type Pipe = {
   destinationHandle: string,
 };
 
-const defaultPipes: Pipe[] = [];
-const defaultCommands: Command[] = [{
-  data: {
-    command: "echo 'hello, world!'".split(" "),
-  },
-  id: uuid(),
-  inputs: 0,
-  outputs: 1,
-  position: {x: 0, y: 0},
-}];
+const defaultPipes: Record<string, Pipe> = {};
+const defaultCommands: Record<string, Command> = {};
 
 const slice = createSlice({
   initialState: {
@@ -48,28 +40,37 @@ const slice = createSlice({
         // way to `Command` even after we give it an `id`.
         return {payload: commands as Command[]};
       },
-      reducer: (state, action: PayloadAction<Array<Command>>) => ({
-        ...state,
-        commands: state.commands.concat(action.payload),
-      }),
+      reducer: (state, action: PayloadAction<Array<Command>>) => {
+        for (const command of action.payload) {
+          state.commands[command.id] = command;
+        }
+      },
+    },
+    editCommand(state, action: PayloadAction<Command>) {
+      console.assert(Object.prototype.hasOwnProperty.call(state.commands, action.payload.id));
+      state.commands[action.payload.id] = action.payload;
+    },
+    editCommandData(state, action: PayloadAction<{id: Command["id"], data: Command["data"]}>) {
+      state.commands[action.payload.id].data = action.payload.data;
     },
     removeCommands(state, action: PayloadAction<Array<Command["id"]>>) {
       const toRemove = new Set(action.payload);
-      return {
-        ...state,
-        commands: state.commands.filter(command => !toRemove.has(command.id)),
-        pipes: state.pipes.filter(pipe => !(toRemove.has(pipe.source) || toRemove.has(pipe.destination))),
-      };
+      for (const [pipeId, pipe] of Object.entries(state.pipes)) {
+        if (toRemove.has(pipe.source) || toRemove.has(pipe.destination)) {
+          delete state.pipes[pipeId];
+        }
+      }
+      for (const command of action.payload) {
+        delete state.commands[command];
+      }
     },
     removePipes(state, action: PayloadAction<Array<Pipe["id"]>>) {
-      const toRemove = new Set(action.payload);
-      return {
-        ...state,
-        pipes: state.pipes.filter(pipe => !toRemove.has(pipe.id)),
-      };
+      for (const pipe of action.payload) {
+        delete state.pipes[pipe];
+      }
     },
   },
 });
 
-export const { addCommands, removeCommands, removePipes } = slice.actions;
+export const { addCommands, editCommand, editCommandData, removeCommands, removePipes } = slice.actions;
 export const graphReducer = slice.reducer;

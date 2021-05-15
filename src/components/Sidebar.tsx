@@ -1,14 +1,14 @@
 import { DragEvent } from "react";
 
 import "./Sidebar.css";
-import { CommandData } from "./commands/types";
+import { BaseCommandData } from "./commands/types";
 
 type Props = {
   className?: string,
 };
 
 export function Sidebar({className = ""}: Props): JSX.Element {
-  const onDragStart = (command: CommandData["command"], event: DragEvent) => {
+  const onDragStart = (command: BaseCommandData["command"], event: DragEvent) => {
     const rect = (event.target as Element).getBoundingClientRect();
     const offset = {
       x: event.clientX - rect.left,

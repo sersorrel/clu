@@ -1,23 +1,33 @@
 import "./CommandNode.css";
+import { useSelector } from "../hooks";
+
 import * as Cut from "./commands/Cut";
-import { Props } from "./commands/types";
+import { BaseCommandData, BaseProps } from "./commands/types";
 
 interface CommandModule {
-  Command: (props: Props) => JSX.Element,
+  Command: (props: BaseProps) => JSX.Element,
+  toCommand: (data: BaseCommandData) => string[],
 }
 
-const specialisations: {[_: string]: CommandModule} = {
+const specialisations: Record<string, CommandModule> = {
   cut: Cut,
 };
 
-function DefaultCommand(props: Props): JSX.Element {
+function defaultToCommand(data: BaseCommandData): string[] {
+  return data.command;
+}
+
+function DefaultCommand(props: BaseProps): JSX.Element {
   return <></>;
 }
 
-export function CommandNode(props: Props): JSX.Element {
-  const Elem = specialisations[props.data.command[0]]?.Command ?? DefaultCommand;
+export function CommandNode(props: BaseProps): JSX.Element {
+  const data = useSelector(state => state.graph.commands[props.id].data);
+  const handler = specialisations[data.command[0]];
+  const toCommand = handler?.toCommand ?? defaultToCommand;
+  const Elem = handler?.Command ?? DefaultCommand;
   return <>
-    <div className="node__commandline">{props.data.command.join(" ")}</div>
+    <div className="node__commandline">{toCommand(data).join(" ")}</div>
     <Elem {...props}/>
   </>;
 }

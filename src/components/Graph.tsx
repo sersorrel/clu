@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "../hooks";
 import { addCommands, removeCommands, removePipes } from "../reducers/graph";
 
 import { CommandNode } from "./CommandNode";
-import { CommandData } from "./commands/types";
 
 type Props = {
   className?: string,
@@ -13,13 +12,12 @@ type Props = {
 
 export function Graph({className = ""}: Props): JSX.Element {
   const dispatch = useDispatch();
-  const commandElements: Node<CommandData>[] = useSelector(state => state.graph.commands).map(command => ({
-    data: command.data,
+  const commandElements: Node[] = Object.values(useSelector(state => state.graph.commands)).map(command => ({
     id: command.id,
     position: command.position,
     type: "command",
   }));
-  const pipeElements: Edge[] = useSelector(state => state.graph.pipes).map(pipe => ({
+  const pipeElements: Edge[] = Object.values(useSelector(state => state.graph.pipes)).map(pipe => ({
     id: pipe.id,
     source: pipe.source,
     sourceHandle: pipe.sourceHandle,

@@ -1,10 +1,11 @@
-export interface CommandData {
+export interface BaseCommandData {
   command: string[],
+  [extra: string]: unknown,
 }
 
-export type Props = {
+export interface BaseProps {
   id: string,
-  data: CommandData,
+  data: BaseCommandData,
   type: string,
   selected: boolean,
   sourcePosition: string,
