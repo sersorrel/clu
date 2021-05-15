@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
 
+import type { CommandData } from "../components/commands/types";
+
 type Command = {
   id: string,
   inputs: number,
   outputs: number,
-  command: string[],
+  data: CommandData,
   position: {
     x: number,
     y: number,
@@ -21,7 +23,9 @@ type Pipe = {
 
 const defaultPipes: Pipe[] = [];
 const defaultCommands: Command[] = [{
-  command: "echo 'hello, world!'".split(" "),
+  data: {
+    command: "echo 'hello, world!'".split(" "),
+  },
   id: uuid(),
   inputs: 0,
   outputs: 1,

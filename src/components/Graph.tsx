@@ -14,9 +14,7 @@ type Props = {
 export function Graph({className = ""}: Props): JSX.Element {
   const dispatch = useDispatch();
   const commandElements: Node<CommandData>[] = useSelector(state => state.graph.commands).map(command => ({
-    data: {
-      command: command.command,
-    },
+    data: command.data,
     id: command.id,
     position: command.position,
     type: "command",
@@ -52,7 +50,9 @@ export function Graph({className = ""}: Props): JSX.Element {
           y: event.clientY - bounds.top - offset.y,
         });
         dispatch(addCommands([{
-          command,
+          data: {
+            command,
+          },
           inputs: 0,
           outputs: 1,
           position,

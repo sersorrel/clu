@@ -1,4 +1,4 @@
-export type CommandData = {
+export interface CommandData {
   command: string[],
 }
 
