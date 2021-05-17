@@ -2,7 +2,7 @@ import { useRef } from "react";
 import ReactFlow, { Edge, isEdge, isNode, Node, useZoomPanHelper } from "react-flow-renderer";
 
 import { useDispatch, useSelector } from "../hooks";
-import { addCommands, removeCommands, removePipes } from "../reducers/graph";
+import { addCommands, addPipes, editPipe, removeCommands, removePipes } from "../reducers/graph";
 
 import { CommandNode } from "./CommandNode";
 
@@ -35,6 +35,14 @@ export function Graph({className = ""}: Props): JSX.Element {
       nodeTypes={{
         command: CommandNode,
       }}
+      onConnect={({source, target, sourceHandle, targetHandle}) => {
+        dispatch(addPipes([{
+          source: source!,
+          destination: target!, // eslint-disable-line sort-keys
+          sourceHandle: sourceHandle!,
+          destinationHandle: targetHandle!, // eslint-disable-line sort-keys
+        }]));
+      }}
       onDragOver={event => {
         event.preventDefault();
         event.dataTransfer.dropEffect = "move";
@@ -51,10 +59,17 @@ export function Graph({className = ""}: Props): JSX.Element {
           data: {
             command,
           },
-          inputs: 0,
-          outputs: 1,
           position,
         }]));
+      }}
+      onEdgeUpdate={({id}, {source, target, sourceHandle, targetHandle}) => {
+        dispatch(editPipe({
+          id,
+          source: source!,
+          destination: target!, // eslint-disable-line sort-keys
+          sourceHandle: sourceHandle!,
+          destinationHandle: targetHandle!, // eslint-disable-line sort-keys
+        }));
       }}
       onElementsRemove={elements => {
         const pipes = elements.filter(element => isEdge(element));

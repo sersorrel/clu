@@ -111,12 +111,10 @@ export const Command = function CutCommand({id}: BaseProps): JSX.Element {
     <Handle
       type="target"
       position={Position.Left}
-      isValidConnection={params => false}
     />
     <Handle
       type="source"
       position={Position.Right}
-      isValidConnection={params => false}
     />
   </>;
 };
