@@ -25,6 +25,49 @@ type Pipe = {
 const defaultPipes: Record<string, Pipe> = {};
 const defaultCommands: Record<string, Command> = {};
 
+function createPipe(state: State["graph"], pipe: Pipe) {
+  // Disallow trivial loops.
+  if (pipe.source === pipe.destination) {
+    return;
+  }
+  // Disallow loops.
+  const createsCycle = (): boolean => {
+    const toVisit: Set<string> = new Set([pipe.destination]);
+    do {
+      const [thisNode] = toVisit; // Destructuring: it's, uh, "cool"
+      toVisit.delete(thisNode);
+      if (thisNode === pipe.source) {
+        return true;
+      }
+      state.commands[thisNode].outputs.forEach(output => toVisit.add(state.pipes[output].destination));
+    } while (toVisit.size > 0);
+    return false;
+  };
+  if (createsCycle()) {
+    return;
+  }
+  // Handle splits (a connection already exists from this source).
+  if (state.commands[pipe.source].outputs.length > 0) {
+    // .slice() is used here to avoid problems with simultaneous
+    // iteration and mutation.
+    for (const pipeId of state.commands[pipe.source].outputs.slice()) {
+      deletePipe(state, state.pipes[pipeId]);
+    }
+    console.assert(state.commands[pipe.source].outputs.length === 0);
+  }
+  // Handle merges (a connection already exists to this destination).
+  if (state.commands[pipe.destination].inputs.length > 0) {
+    for (const pipeId of state.commands[pipe.destination].inputs.slice()) {
+      deletePipe(state, state.pipes[pipeId]);
+    }
+    console.assert(state.commands[pipe.destination].inputs.length === 0);
+  }
+  // Finally, connect up the pipe.
+  state.pipes[pipe.id] = pipe;
+  state.commands[pipe.source].outputs.push(pipe.id);
+  state.commands[pipe.destination].inputs.push(pipe.id);
+}
+
 function deletePipe(state: State["graph"], pipe: Pipe) {
   console.assert(state.pipes[pipe.id] != null);
   state.commands[pipe.source].outputs = state.commands[pipe.source].outputs.filter(id => id !== pipe.id);
@@ -65,46 +108,7 @@ const slice = createSlice({
       },
       reducer: (state, action: PayloadAction<Array<Pipe>>) => {
         for (const pipe of action.payload) {
-          // Disallow trivial loops.
-          if (pipe.source === pipe.destination) {
-            continue;
-          }
-          // Disallow loops.
-          const createsCycle = (): boolean => {
-            const toVisit: Set<string> = new Set([pipe.destination]);
-            do {
-              const [thisNode] = toVisit; // Destructuring: it's, uh, "cool"
-              toVisit.delete(thisNode);
-              if (thisNode === pipe.source) {
-                return true;
-              }
-              state.commands[thisNode].outputs.forEach(output => toVisit.add(state.pipes[output].destination));
-            } while (toVisit.size > 0);
-            return false;
-          };
-          if (createsCycle()) {
-            continue;
-          }
-          // Handle splits (a connection already exists from this source).
-          if (state.commands[pipe.source].outputs.length > 0) {
-            // .slice() is used here to avoid problems with simultaneous
-            // iteration and mutation.
-            for (const pipeId of state.commands[pipe.source].outputs.slice()) {
-              deletePipe(state, state.pipes[pipeId]);
-            }
-            console.assert(state.commands[pipe.source].outputs.length === 0);
-          }
-          // Handle merges (a connection already exists to this destination).
-          if (state.commands[pipe.destination].inputs.length > 0) {
-            for (const pipeId of state.commands[pipe.destination].inputs.slice()) {
-              deletePipe(state, state.pipes[pipeId]);
-            }
-            console.assert(state.commands[pipe.destination].inputs.length === 0);
-          }
-          // Finally, connect up the pipe.
-          state.pipes[pipe.id] = pipe;
-          state.commands[pipe.source].outputs.push(pipe.id);
-          state.commands[pipe.destination].inputs.push(pipe.id);
+          createPipe(state, pipe);
         }
       },
     },
@@ -116,18 +120,10 @@ const slice = createSlice({
       state.commands[action.payload.id].data = action.payload.data;
     },
     editPipe(state, action: PayloadAction<Pipe>) {
-      // TODO: change to a delete+add
       console.assert(Object.prototype.hasOwnProperty.call(state.pipes, action.payload.id));
       const oldPipe = state.pipes[action.payload.id];
-      state.commands[oldPipe.source].outputs = state.commands[oldPipe.source].outputs.filter(id => (
-        id !== action.payload.id
-      ));
-      state.commands[oldPipe.destination].inputs = state.commands[oldPipe.destination].inputs.filter(id => (
-        id !== action.payload.id
-      ));
-      state.pipes[action.payload.id] = action.payload;
-      state.commands[action.payload.source].outputs.push(action.payload.id);
-      state.commands[action.payload.destination].inputs.push(action.payload.id);
+      deletePipe(state, oldPipe);
+      createPipe(state, action.payload);
     },
     removeCommands(state, action: PayloadAction<Array<Command["id"]>>) {
       for (const command of action.payload) {
