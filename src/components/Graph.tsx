@@ -2,7 +2,7 @@ import { useRef } from "react";
 import ReactFlow, { Edge, isEdge, isNode, Node, useZoomPanHelper } from "react-flow-renderer";
 
 import { useDispatch, useSelector } from "../hooks";
-import { addCommands, addPipes, editPipe, removeCommands, removePipes } from "../reducers/graph";
+import { addCommands, addPipes, clickCommand, editPipe, removeCommands, removePipes } from "../reducers/graph";
 
 import { CommandNode } from "./CommandNode";
 
@@ -70,6 +70,11 @@ export function Graph({className = ""}: Props): JSX.Element {
           sourceHandle: sourceHandle!,
           destinationHandle: targetHandle!, // eslint-disable-line sort-keys
         }));
+      }}
+      onElementClick={(event, element) => {
+        if (isNode(element)) {
+          dispatch(clickCommand(element.id));
+        }
       }}
       onElementsRemove={elements => {
         const pipes = elements.filter(element => isEdge(element));

@@ -4,7 +4,7 @@
     "header header"
     "sidebar content";
   grid-template-rows: fit-content(50%) auto;
-  grid-template-columns: min-content minmax(400px, auto);
+  grid-template-columns: auto 1fr;
   gap: 1px;
   background-color: black;
   height: 100vh;
@@ -12,9 +12,8 @@
 
 .app__header {
   grid-area: header;
-  text-align: center;
   margin: 0;
-  padding: 0.4em 0;
+  padding: 10px;
   background-color: white;
 }
 

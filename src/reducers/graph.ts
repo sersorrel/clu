@@ -78,6 +78,7 @@ function deletePipe(state: State["graph"], pipe: Pipe) {
 const slice = createSlice({
   initialState: {
     commands: defaultCommands,
+    lastCommand: <string | null>null,
     pipes: defaultPipes,
   },
   name: "graph",
@@ -96,6 +97,7 @@ const slice = createSlice({
       reducer: (state, action: PayloadAction<Array<Command>>) => {
         for (const command of action.payload) {
           state.commands[command.id] = command;
+          state.lastCommand = command.id;
         }
       },
     },
@@ -112,12 +114,17 @@ const slice = createSlice({
         }
       },
     },
+    clickCommand(state, action: PayloadAction<Command["id"]>) {
+      state.lastCommand = action.payload;
+    },
     editCommand(state, action: PayloadAction<Command>) {
       console.assert(Object.prototype.hasOwnProperty.call(state.commands, action.payload.id));
       state.commands[action.payload.id] = action.payload;
+      state.lastCommand = action.payload.id;
     },
     editCommandData(state, action: PayloadAction<{id: Command["id"], data: Command["data"]}>) {
       state.commands[action.payload.id].data = action.payload.data;
+      state.lastCommand = action.payload.id;
     },
     editPipe(state, action: PayloadAction<Pipe>) {
       console.assert(Object.prototype.hasOwnProperty.call(state.pipes, action.payload.id));
@@ -145,6 +152,7 @@ const slice = createSlice({
 export const {
   addCommands,
   addPipes,
+  clickCommand,
   editCommand,
   editCommandData,
   editPipe,
