@@ -2,7 +2,15 @@ import { useRef } from "react";
 import ReactFlow, { Edge, isEdge, isNode, Node, useZoomPanHelper } from "react-flow-renderer";
 
 import { useDispatch, useSelector } from "../hooks";
-import { addCommands, addPipes, clickCommand, editPipe, removeCommands, removePipes } from "../reducers/graph";
+import {
+  addCommands,
+  addPipes,
+  clickCommand,
+  editCommandPosition,
+  editPipe,
+  removeCommands,
+  removePipes,
+} from "../reducers/graph";
 
 import { CommandNode } from "./CommandNode";
 
@@ -85,6 +93,9 @@ export function Graph({className = ""}: Props): JSX.Element {
         if (commands.length > 0) {
           dispatch(removeCommands(commands.map(command => command.id)));
         }
+      }}
+      onNodeDragStop={(event, node) => {
+        dispatch(editCommandPosition({id: node.id, ...node.position}));
       }}
     />
   </div>;

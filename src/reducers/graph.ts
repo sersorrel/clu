@@ -126,6 +126,10 @@ const slice = createSlice({
       state.commands[action.payload.id].data = action.payload.data;
       state.lastCommand = action.payload.id;
     },
+    editCommandPosition(state, action: PayloadAction<{id: Command["id"], x: number, y: number}>) {
+      state.commands[action.payload.id].position.x = action.payload.x;
+      state.commands[action.payload.id].position.y = action.payload.y;
+    },
     editPipe(state, action: PayloadAction<Pipe>) {
       console.assert(Object.prototype.hasOwnProperty.call(state.pipes, action.payload.id));
       const oldPipe = state.pipes[action.payload.id];
@@ -155,6 +159,7 @@ export const {
   clickCommand,
   editCommand,
   editCommandData,
+  editCommandPosition,
   editPipe,
   removeCommands,
   removePipes,
