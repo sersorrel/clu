@@ -1,3 +1,4 @@
+import { getRegisteredCommand } from "../commands";
 import { useSelector } from "../hooks";
 import { State } from "../store";
 
@@ -20,7 +21,7 @@ function toCommand(graph: State["graph"]): string | null {
   // Walk forwards, building up the command as we go.
   const command = [];
   do {
-    command.push(node.data.commandName);
+    command.push(getRegisteredCommand(node.data.commandName)?.toCommand(node.data).join(" "));
     node = graph.commands[graph.pipes[node.outputs[0]]?.destination];
   } while (node);
   // TODO: quoting etc.
