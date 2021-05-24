@@ -8,7 +8,7 @@ type Props = {
 };
 
 export function Sidebar({className = ""}: Props): JSX.Element {
-  const onDragStart = (command: BaseCommandData["command"], event: DragEvent) => {
+  const onDragStart = (command: BaseCommandData["commandName"], event: DragEvent) => {
     const rect = (event.target as Element).getBoundingClientRect();
     const offset = {
       x: event.clientX - rect.left,
@@ -26,7 +26,7 @@ export function Sidebar({className = ""}: Props): JSX.Element {
         className="react-flow__node react-flow__node-default sidebar__node"
         draggable
         key={command}
-        onDragStart={event => onDragStart([command], event)}
+        onDragStart={event => onDragStart(command, event)}
       >
         {command}
       </div>

@@ -1,20 +1,11 @@
 import "./CommandNode.css";
+import { getRegisteredCommand } from "../commands";
 import { useSelector } from "../hooks";
 
-import * as Cut from "./commands/Cut";
 import { BaseCommandData, BaseProps } from "./commands/types";
 
-interface CommandModule {
-  Command: (props: BaseProps) => JSX.Element,
-  toCommand: (data: BaseCommandData) => string[],
-}
-
-const specialisations: Record<string, CommandModule> = {
-  cut: Cut,
-};
-
 function defaultToCommand(data: BaseCommandData): string[] {
-  return data.command;
+  return [data.commandName, "..."];
 }
 
 function DefaultCommand(props: BaseProps): JSX.Element {
@@ -23,7 +14,7 @@ function DefaultCommand(props: BaseProps): JSX.Element {
 
 export function CommandNode(props: BaseProps): JSX.Element {
   const data = useSelector(state => state.graph.commands[props.id]?.data);
-  const handler = specialisations[data?.command[0]];
+  const handler = data && getRegisteredCommand(data.commandName);
   const toCommand = handler?.toCommand ?? defaultToCommand;
   const Elem = handler?.Command ?? DefaultCommand;
   return <>

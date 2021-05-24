@@ -65,7 +65,7 @@ export function Graph({className = ""}: Props): JSX.Element {
         });
         dispatch(addCommands([{
           data: {
-            command,
+            commandName: command,
           },
           position,
         }]));

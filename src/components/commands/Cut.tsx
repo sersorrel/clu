@@ -15,6 +15,8 @@ interface CommandData extends BaseCommandData {
   zeroTerminated: boolean,
 }
 
+export const commandName = "cut";
+
 export function toTotal(data: Partial<CommandData> & BaseCommandData): CommandData {
   // This construction means we can put whatever we want in BaseCommandData,
   // but we still get errors from TypeScript if we forget to set a default for

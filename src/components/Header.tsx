@@ -20,7 +20,7 @@ function toCommand(graph: State["graph"]): string | null {
   // Walk forwards, building up the command as we go.
   const command = [];
   do {
-    command.push(node.data.command);
+    command.push(node.data.commandName);
     node = graph.commands[graph.pipes[node.outputs[0]]?.destination];
   } while (node);
   // TODO: quoting etc.

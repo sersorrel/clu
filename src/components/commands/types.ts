@@ -1,5 +1,5 @@
 export interface BaseCommandData {
-  command: string[],
+  commandName: string,
   [extra: string]: unknown,
 }
 
