@@ -14,9 +14,8 @@
 .header__command {
   font-family: monospace;
   background-color: #ddd;
-  max-width: 700px;
   margin: 0 1rem;
   padding: 0.2rem 0.5rem;
   overflow-x: auto;
-  white-space: nowrap;
+  white-space: pre;
 }
