@@ -26,7 +26,6 @@ function toCommand(graph: State["graph"]): string | null {
     command.push(getRegisteredCommand(node.data.commandName)?.toCommand(node.data).map(s => quote(s)).join(" "));
     node = graph.commands[graph.pipes[node.outputs[0]]?.destination];
   } while (node);
-  // TODO: quoting etc.
   return command.join(" | ");
 }
 

@@ -1,0 +1,40 @@
+clu_version: 0.1
+command_name: cut
+# parameter: not required, string, not present if string empty
+# flag: not required, boolean
+# parameter-group: required, exactly one must be selected
+uses_stdin: true
+uses_stdout: true
+arguments:
+  - description: select by
+    type: parameter_group
+    parameters:
+      - short: -b
+        long: --bytes
+        description: bytes
+      - short: -c
+        long: --characters
+        description: characters
+      - short: -f
+        long: --fields
+        description: fields
+  - type: argument
+    description: select
+  - long: --complement
+    description: invert selection
+    type: flag
+  - short: -d
+    long: --delimiter
+    description: delimiter
+    type: parameter
+  - short: -s
+    long: --only-delimited
+    description: ignore undelimited lines
+    type: flag
+  - long: --output-delimiter
+    description: output delimiter
+    type: parameter
+  - short: -z
+    long: --zero-terminated
+    description: input lines are null-terminated
+    type: flag

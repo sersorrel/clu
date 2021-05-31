@@ -8,6 +8,7 @@
 .header__title {
   font-weight: bold;
   margin: 0 1rem;
+  padding: 0.2rem 0.5rem;
   user-select: none;
 }
 

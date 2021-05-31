@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "target": "ES6",
+    "target": "ES2019",
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "dist",

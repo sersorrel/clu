@@ -1,0 +1,46 @@
+clu_version: 0.1
+command_name: uniq
+uses_stdin: true
+uses_stdout: true
+arguments:
+  - short: -c
+    long: --count
+    description: prefix lines by number of occurrences
+    type: flag
+  - short: -d
+    long: --repeated
+    description: only print duplicate lines (once per group)
+    type: flag
+  - short: -D
+    description: print all duplicate lines
+    type: flag
+  - long: --all-repeated
+    description: print all duplicate lines, but separate groups in output
+    type: parameter # enum, unrepresentable
+  - short: -f
+    long: --skip-fields
+    description: don't compare first fields
+    type: parameter
+  - long: --group
+    description: show all lines, separating groups with blank lines
+    type: parameter # enum, unrepresentable
+  - short: -i
+    long: --ignore-case
+    description: ignore case differences when comparing
+    type: flag
+  - short: -s
+    long: --skip-chars
+    description: don't compare first characters
+    type: parameter
+  - short: -u
+    long: --unique
+    description: only print unique lines
+    type: flag
+  - short: -z
+    long: --zero-terminated
+    description: line delimiter is NUL
+    type: flag
+  - short: -w
+    long: --check-chars
+    description: compare at most this many characters
+    type: parameter

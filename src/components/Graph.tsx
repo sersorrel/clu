@@ -57,7 +57,11 @@ export function Graph({className = ""}: Props): JSX.Element {
       }}
       onDrop={event => {
         event.preventDefault();
-        const {command, offset} = JSON.parse(event.dataTransfer.getData("application/x-clu-new-command"));
+        const json = event.dataTransfer.getData("application/x-clu-new-command");
+        if (!json) {
+          return;
+        }
+        const {command, offset} = JSON.parse(json);
         const bounds = reactFlowWrapper.current!.getBoundingClientRect();
         const position = zoomPanHelper.project({
           x: event.clientX - bounds.left - offset.x,

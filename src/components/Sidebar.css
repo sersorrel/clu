@@ -2,3 +2,9 @@
   position: static;
   margin: 8px;
 }
+
+.sidebar__info {
+  margin: 8px auto;
+  padding: 0 8px;
+  width: 172px;
+}

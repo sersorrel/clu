@@ -1,0 +1,112 @@
+clu_version: 0.1
+command_name: sort
+uses_stdin: true
+uses_stdout: true
+arguments:
+  - short: -b
+    long: --ignore-leading-blanks
+    description: ignore leading blanks
+    type: flag
+  - short: -d
+    long: --dictionary-order
+    description: sort based only on blanks and alphanumerics
+    type: flag
+  - short: -f
+    long: --ignore-case
+    description: fold lower case to upper case characters
+    type: flag
+  - short: -g
+    long: --general-numeric-sort
+    description: compare according to "general numerical value"
+    type: flag
+  - short: -i
+    long: --ignore-nonprinting
+    description: consider only printable characters
+    type: flag
+  - short: -M
+    long: --month-sort
+    description: compare unknown < "JAN" < ... < "DEC"
+    type: flag
+  - short: -h
+    long: --human-numeric-sort
+    description: compare human readable numbers (e.g. 2K, 1G)
+    type: flag
+  - short: -n
+    long: --numeric-sort
+    description: compare according to "string numerical value"
+    type: flag
+  - short: -R
+    long: --random-sort
+    description: shuffle, grouping identical keys
+    type: flag
+  - long: --random-source
+    description: get random bytes from
+    type: parameter
+  - short: -r
+    long: --reverse
+    description: reverse result of comparisons
+    type: flag
+  # --sort is unrepresentable
+  - short: -V
+    long: --version-sort
+    description: compare version numbers
+    type: flag
+  - long: --batch-size
+    description: inputs to merge at once
+    type: parameter
+  - short: -c
+    long: --check
+    description: check for sorted input, don't sort
+    type: flag
+  - short: -C
+    description: check, but don't report first unsorted line
+    type: flag
+  - long: --compress-program
+    description: compression program
+    type: parameter
+  - long: --debug
+    description: show which part of the line was used for sorting
+    type: flag
+  - long: --files0-from
+    description: read null-terminated filenames from
+    type: parameter
+  - short: -k
+    long: --key
+    description: sort by key
+    type: parameter
+  - short: -m
+    long: --merge
+    description: merge already-sorted files
+    type: flag
+  - short: -o
+    long: --output
+    description: write result to
+    type: parameter
+  - short: -s
+    long: --stable
+    description: use stable sort
+    type: flag
+  - short: -S
+    long: --buffer-size
+    description: size of main memory buffer
+    type: parameter
+  - short: -t
+    long: --field-separator
+    description: field separator
+    type: parameter
+  - short: -T
+    long: --temporary-directory
+    description: store temporaries in
+    type: parameter # can be repeated, unrepresentable
+  - long: --parallel
+    description: sorts to run concurrently
+    type: parameter
+  - short: -u
+    long: --unique
+    description: check for strict ordering, or output only the first of a set
+      of matching line
+    type: flag
+  - short: -z
+    long: --zero-terminated
+    description: use NUL as line delimiter
+    type: flag

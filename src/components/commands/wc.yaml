@@ -1,0 +1,28 @@
+clu_version: 0.1
+command_name: wc
+uses_stdin: true
+uses_stdout: true
+arguments:
+  - short: -c
+    long: --bytes
+    description: print byte count
+    type: flag
+  - short: -m
+    long: --chars
+    description: print character count
+    type: flag
+  - short: -l
+    long: --lines
+    description: print line count
+    type: flag
+  - long: --files0-from
+    description: read null-terminated filenames from
+    type: parameter
+  - short: -L
+    long: --max-line-length
+    description: print maximum display width
+    type: flag
+  - short: -w
+    long: --words
+    description: print word count
+    type: flag

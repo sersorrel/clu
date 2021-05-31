@@ -1,0 +1,57 @@
+clu_version: 0.1
+command_name: df
+uses_stdin: false
+uses_stdout: true
+arguments:
+  - short: -a
+    long: --all
+    description: include "pseudo, duplicate, inaccessible file systems"
+    type: flag
+  - short: -B
+    long: --block-size
+    description: scale sizes by # K,M,G,T,P,E,Z,Y,KB,MB,...
+    type: parameter
+  - short: -h
+    long: --human-readable
+    description: print sizes in powers of 1024
+    type: flag
+  - short: -H
+    long: --si
+    description: print sizes in powers of 1000
+    type: flag
+  - short: -i
+    long: --inodes
+    description: list inodes instead of blocks
+    type: flag
+#  - short: -k
+#    description: print sizes in multiples of 1024 bytes
+#    type: flag
+  - short: -l
+    long: --local
+    description: only list local file systems
+    type: flag
+  - long: --output
+    description: output format
+    type: parameter
+  - short: -P
+    long: --portability
+    description: use POSIX output format
+    type: flag
+  - long: --sync
+    description: sync before getting usage info
+    type: flag
+  - long: --total
+    description: produce a grand total
+    type: flag
+  - short: -t
+    long: --type
+    description: list only file systems of type
+    type: parameter
+  - short: -T
+    long: --print-type
+    description: print file system type
+    type: flag
+  - short: -x
+    long: --exclude-type
+    description: don't list file systems of type
+    type: parameter
