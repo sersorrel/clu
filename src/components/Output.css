@@ -1,0 +1,40 @@
+.output {
+  display: grid;
+  grid-template-areas:
+    "stdout-header stderr-header"
+    "stdout stderr";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: min-content 1fr;
+  column-gap: 1px;
+  background-color: black !important;
+}
+
+.output__stdout_header {
+  grid-area: stdout-header;
+  font-weight: bold;
+  background-color: white;
+  padding: 8px 8px 0;
+}
+
+.output__stderr_header {
+  grid-area: stderr-header;
+  font-weight: bold;
+  background-color: white;
+  padding: 8px 8px 0;
+}
+
+.output__stdout {
+  grid-area: stdout;
+  margin: 0;
+  background-color: white;
+  padding: 8px;
+  overflow: auto;
+}
+
+.output__stderr {
+  grid-area: stderr;
+  margin: 0;
+  background-color: white;
+  padding: 8px;
+  overflow: auto;
+}

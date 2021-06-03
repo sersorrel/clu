@@ -1,9 +1,11 @@
-import "./CommandNode.css";
+import { quote } from "shlex";
+
 import { getRegisteredCommand } from "../commands";
 import { useSelector } from "../hooks";
 
 import { BaseCommandData, BaseProps } from "./commands/types";
-import { quote } from "shlex";
+
+import "./CommandNode.css";
 
 function defaultToCommand(data: BaseCommandData): string[] {
   return [data.commandName, "..."];

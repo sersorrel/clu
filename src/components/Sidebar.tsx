@@ -1,8 +1,9 @@
 import { DragEvent, useState } from "react";
 
 import "./Sidebar.css";
-import { BaseCommandData } from "./commands/types";
 import { registerCommand } from "../commands";
+
+import { BaseCommandData } from "./commands/types";
 
 type Props = {
   className?: string,
@@ -60,8 +61,7 @@ export function Sidebar({className = ""}: Props): JSX.Element {
         onDragStart={event => onDragStart(command, event)}
       >
         {command}
-      </div>
-    )}
+      </div>)}
     <div className="sidebar__info">Drag and drop YAML files here to add more commands!</div>
   </div>;
 }

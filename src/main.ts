@@ -15,6 +15,11 @@ const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
+    // TODO: this is grim!
+    webPreferences: { // eslint-disable-line sort-keys
+      contextIsolation: false,
+      nodeIntegration: true,
+    },
   });
 
   // Load the index.html of the app.

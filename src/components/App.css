@@ -2,8 +2,9 @@
   display: grid;
   grid-template-areas:
     "header header"
-    "sidebar content";
-  grid-template-rows: fit-content(50%) auto;
+    "sidebar content"
+    "output output";
+  grid-template-rows: fit-content(50%) 3fr minmax(5rem, 1.2fr);
   grid-template-columns: auto 1fr;
   gap: 1px;
   background-color: black;
@@ -25,5 +26,10 @@
 
 .app__graph {
   grid-area: content;
+  background-color: white;
+}
+
+.app__output {
+  grid-area: output;
   background-color: white;
 }

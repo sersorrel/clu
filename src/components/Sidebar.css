@@ -1,3 +1,7 @@
+.sidebar {
+  overflow-y: auto;
+}
+
 .sidebar__node {
   position: static;
   margin: 8px;

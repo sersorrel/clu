@@ -1,0 +1,10 @@
+clu_version: 0.1
+command_name: echo
+uses_stdin: false
+uses_stdout: true
+arguments:
+  - short: -e
+    description: interpret backslash escapes
+    type: flag
+  - description: string
+    type: argument

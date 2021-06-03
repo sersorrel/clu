@@ -1,10 +1,12 @@
+import { Handle, Position } from "react-flow-renderer";
+import { quote } from "shlex";
 import YAML from "yaml";
 
 import * as Cut from "./components/commands/Cut";
 import { BaseCommandData, BaseProps } from "./components/commands/types";
 import { useDispatch, useSelector } from "./hooks";
 import { editCommandData } from "./reducers/graph";
-import { Handle, Position } from "react-flow-renderer";
+import { State } from "./store";
 
 interface RegisteredCommand {
   Command: (props: BaseProps) => JSX.Element,
@@ -12,9 +14,29 @@ interface RegisteredCommand {
   toCommand: (data: BaseCommandData) => string[],
 }
 
+// TODO: this should probably live in React state somewhere, really
 const commands: Record<RegisteredCommand["commandName"], RegisteredCommand> = {
   [Cut.commandName]: Cut,
 };
+
+export function graphToCommand(graph: State["graph"]): string | null {
+  const { lastCommand } = graph;
+  if (lastCommand == null || !Object.prototype.hasOwnProperty.call(graph.commands, lastCommand)) {
+    return null;
+  }
+  // Walk backwards to find the start of the command.
+  let node = graph.commands[lastCommand];
+  while (node.inputs.length > 0) {
+    node = graph.commands[graph.pipes[node.inputs[0]].source];
+  }
+  // Walk forwards, building up the command as we go.
+  const command = [];
+  do {
+    command.push(getRegisteredCommand(node.data.commandName)?.toCommand(node.data).map(s => quote(s)).join(" "));
+    node = graph.commands[graph.pipes[node.outputs[0]]?.destination];
+  } while (node);
+  return command.join(" | ");
+}
 
 export function registerCommand(input: string): RegisteredCommand {
   const model = YAML.parse(input);
@@ -89,22 +111,20 @@ export function registerCommand(input: string): RegisteredCommand {
       </>;
     },
     commandName: model.command_name,
-    toCommand: (data): string[] => {
-      return [model.command_name].concat((model.arguments as any[]).flatMap((argument, i) => {
-        // TODO: make parameter_group take a parameter, and add flag_group
-        switch (argument.type) {
-        case "argument":
-          return [data[i] ?? ""];
-        case "flag":
-          return data[i] ? [argument.short ?? argument.long] : [];
-        case "parameter":
-          return data[i] != null ? [argument.short ?? argument.long, data[i]] : [];
-        case "parameter_group":
-          const parameter = argument.parameters[data[i] as number ?? 0];
-          return parameter.short ?? parameter.long;
-        }
-      }));
-    },
+    toCommand: (data): string[] => [model.command_name].concat((model.arguments as any[]).flatMap((argument, i) => {
+      // TODO: make parameter_group take a parameter, and add flag_group
+      switch (argument.type) {
+      case "argument":
+        return [data[i] ?? ""];
+      case "flag":
+        return data[i] ? [argument.short ?? argument.long] : [];
+      case "parameter":
+        return data[i] != null ? [argument.short ?? argument.long, data[i]] : [];
+      case "parameter_group":
+        const parameter = argument.parameters[data[i] as number ?? 0];
+        return parameter.short ?? parameter.long;
+      }
+    })),
   };
 }
 
