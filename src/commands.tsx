@@ -16,7 +16,7 @@ interface RegisteredCommand {
 
 // TODO: this should probably live in React state somewhere, really
 const commands: Record<RegisteredCommand["commandName"], RegisteredCommand> = {
-  [Cut.commandName]: Cut,
+  // [Cut.commandName]: Cut,
 };
 
 export function graphToCommand(graph: State["graph"]): string | null {
